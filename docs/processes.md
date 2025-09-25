@@ -328,8 +328,7 @@ Each PDF or form is assigned a unique **itemId**. This item ID is communicated t
 
 ### PATH VARIABLES
 
-itemId  
-An item can be of type Signature Request or Form Fill. Each item is identified by a unique itemId. These IDs are generated and returned by the v0/process/generate endpoint whenever a new process is created. The webhook notification system also includes the corresponding itemId in every event, allowing organizations to track and retrieve the related documents.
+|**itemId**|An item can be of type Signature Request or Form Fill. Each item is identified by a unique itemId. These IDs are generated and returned by the v0/process/generate endpoint whenever a new process is created. The webhook notification system also includes the corresponding itemId in every event, allowing organizations to track and retrieve the related documents.|
 
 ---
 
@@ -369,8 +368,7 @@ Organizations can call this endpoint to ensure users are reminded to complete th
 
 ### PATH VARIABLES
 
-processId  
-Unique identifier of the process to resend.
+|processId|Unique identifier of the process to resend.
 
 ---
 
@@ -491,9 +489,6 @@ The securityLevel parameter accepts the following values:
 |Authorization|Bearer {{api_key}}|
 |X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
 |X-Timestamp|1756197897518|
-
-Content-Type  
-application/json
 
 ### BODY
 
