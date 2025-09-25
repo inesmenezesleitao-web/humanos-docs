@@ -1,33 +1,34 @@
-# Processes
+# 📁 Processes 
+This API section is fully dedicated to the creation and management of processes. 
 
-This API section is fully dedicated to the creation and management of processes.
-
----
 
 ## List Processes
-
-**Method:** `GET`  
-**URL:** `{{base_url}}/process?search=<search_term>&withDetails=<bool>`
-
-### Description
-Returns a list of processes saved by the organization (max 20 per page). Use `withDetails=true` to include items (templates, forms, consents) in the response.
-
-### Query Parameters
-| Name | Type | Required | Description |
-|---|---|---|---|
-| `search` | string | no | Filter processes by name/title. |
-| `withDetails` | boolean | no | Include process items in the response. |
-
+This endpoint returns a list of processes saved by the organization, each including the process id, name and description. The id is required when calling the Generate Process endpoint. The response is limited to a maximum of 20 processes per request. Details regarding the items of the process can be included in the response by setting the withDetails param to true.
+### Method: GET
+>```
+>{{base_url}}/process?search=<search_term>&withDetails=<bool>
+>```
 ### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
-```
 
-### Responses
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-timestamp|1756197897518|
 
-#### Processes without Details — 200 OK
+
+### Query Params
+
+|Param|value|
+|---|---|
+|search|<search_term>|
+|withDetails|<bool>|
+
+
+### Response: 200
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
+
 ```json
 [
   {
@@ -39,480 +40,450 @@ X-Timestamp: 1756197897518
     "id": "64f1a2c3b9d8e1f234abcd34",
     "name": "Personal Data Update",
     "description": "Process for collecting and validating new documents and updated client information."
+  },
+  {
+    "id": "64f1a2c3b9d8e1f234abcd56",
+    "name": "Marketing Consent",
+    "description": "Collection of explicit client consent to receive communications and marketing campaigns."
+  },
+  {
+    "id": "64f1a2c3b9d8e1f234abcd78",
+    "name": "Legal Document Validation",
+    "description": "Submission and validation of legal documents with electronic signature."
+  },
+  {
+    "id": "64f1a2c3b9d8e1f234abcd9a",
+    "name": "Service Agreement",
+    "description": "Digital signing flow for a service contract between the client and the organization."
   }
 ]
 ```
+</details>
 
-#### Processes with Details — 200 OK
+### Response: 200
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
+
 ```json
 [
-  {
-    "id": "68812be4f69fa320d3b3fd7b",
-    "name": "Processo Onboarding Cliente",
-    "description": "Processo Onboarding Cliente",
-    "templates": [
-      {
-        "id": "683de6b22d2267803376acb1",
-        "name": "Contrato de Serviço",
-        "description": "Contrato de Serviço",
-        "internalId": null
-      }
-    ],
-    "forms": [
-      {
-        "id": "68812ae5f69fa320d3b3fd7a",
-        "name": "Dados de Cliente",
-        "description": "Atualização de dados de cliente",
-        "required": true,
-        "internalId": null
-      }
-    ],
-    "consents": []
-  },
-  {
-    "id": "68812e4ef69fa320d3b3fd85",
-    "name": "Processo Onboarding Cliente com consentimento dados",
-    "description": "Processo Onboarding Cliente com consentimento dados",
-    "templates": [
-      {
-        "id": "683de6b22d2267803376acb1",
-        "name": "Contrato de Serviço",
-        "description": "Contrato de Serviço",
-        "internalId": null
-      },
-      {
-        "id": "683de6cb2d2267803376acb2",
-        "name": "Contrato de Trabalho",
-        "description": "Contrato de Trabalho",
-        "internalId": null
-      }
-    ],
-    "forms": [
-      {
-        "id": "68812ae5f69fa320d3b3fd7a",
-        "name": "Dados de Cliente",
-        "description": "Atualização de dados de cliente",
-        "required": true,
-        "internalId": null
-      }
-    ],
-    "consents": [
-      {
-        "id": "68812c92f69fa320d3b3fd7c",
-        "name": "Termos e Condições",
-        "description": "",
-        "required": true,
-        "internalId": null
-      }
-    ]
-  },
-  {
-    "id": "6883a63da1e72aa9fd23c512",
-    "name": "Termos de responsabilidade",
-    "description": "Termos de responsabilidade",
-    "templates": [],
-    "forms": [
-      {
-        "id": "68812ae5f69fa320d3b3fd7a",
-        "name": "Dados de Cliente",
-        "description": "Atualização de dados de cliente",
-        "required": true,
-        "internalId": null
-      }
-    ],
-    "consents": [
-      {
-        "id": "68812c92f69fa320d3b3fd7c",
-        "name": "Termos e Condições",
-        "description": "",
-        "required": true,
-        "internalId": null
-      }
-    ]
-  }
+    {
+        "id": "68812be4f69fa320d3b3fd7b",
+        "name": "Processo Onboarding Cliente",
+        "description": "Processo Onboarding Cliente",
+        "templates": [
+            {
+                "id": "683de6b22d2267803376acb1",
+                "name": "Contrato de Serviço",
+                "description": "Contrato de Serviço",
+                "internalId": null
+            }
+        ],
+        "forms": [
+            {
+                "id": "68812ae5f69fa320d3b3fd7a",
+                "name": "Dados de Cliente",
+                "description": "Atualização de dados de cliente",
+                "required": true,
+                "internalId": null
+            }
+        ],
+        "consents": []
+    },
+    {
+        "id": "68812e4ef69fa320d3b3fd85",
+        "name": "Processo Onboarding Cliente com consentimento dados",
+        "description": "Processo Onboarding Cliente com consentimento dados",
+        "templates": [
+            {
+                "id": "683de6b22d2267803376acb1",
+                "name": "Contrato de Serviço",
+                "description": "Contrato de Serviço",
+                "internalId": null
+            },
+            {
+                "id": "683de6cb2d2267803376acb2",
+                "name": "Contrato de Trabalho",
+                "description": "Contrato de Trabalho",
+                "internalId": null
+            }
+        ],
+        "forms": [
+            {
+                "id": "68812ae5f69fa320d3b3fd7a",
+                "name": "Dados de Cliente",
+                "description": "Atualização de dados de cliente",
+                "required": true,
+                "internalId": null
+            }
+        ],
+        "consents": [
+            {
+                "id": "68812c92f69fa320d3b3fd7c",
+                "name": "Termos e Condições",
+                "description": "",
+                "required": true,
+                "internalId": null
+            }
+        ]
+    },
+    {
+        "id": "6883a63da1e72aa9fd23c512",
+        "name": "Termos de responsabilidade",
+        "description": "Termos de responsabilidade",
+        "templates": [],
+        "forms": [
+            {
+                "id": "68812ae5f69fa320d3b3fd7a",
+                "name": "Dados de Cliente",
+                "description": "Atualização de dados de cliente",
+                "required": true,
+                "internalId": null
+            }
+        ],
+        "consents": [
+            {
+                "id": "68812c92f69fa320d3b3fd7c",
+                "name": "Termos e Condições",
+                "description": "",
+                "required": true,
+                "internalId": null
+            }
+        ]
+    }
 ]
 ```
+</details>
 
-#### Empty Response — 200 OK
+### Response: 200
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
+
 ```json
 []
 ```
+</details>
 
----
 
 ## Process Status
+This endpoint provides a real-time view of a process by passing its unique ID. **Response body includes:**
 
-**Method:** `GET`  
-**URL:** `{{base_url}}/process/status/:processId`
+- **Basic process information:** name, reference, description, order, number of pending users, creation date, and cancellation date.
+- **Item status:** for each item in the process (document, form, or consent), basic information is shown along with a list of signers and their actions (e.g., information provided, signature, rejection, etc.).
 
-### Description
-Provides a real-time view of a process by its unique ID, including basic information, item status, users and actions.
+### Method: GET
+>```
+>{{base_url}}/process/status/:processId
+>```
 
-### Path Variables
-| Name | Description |
+### Headers
+
+|Header|Value|
 |---|---|
-| `processId` | The unique identifier of the process. |
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
 
-### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
-```
+### Response: 200
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
 
-### Example Success Response — 200 OK
 ```json
 {
-  "id": "68812e5ef69fa320d3b3fd86",
-  "missingInvolved": 0,
-  "reference": "mRjFS7PWuosi",
-  "name": "Client Onboarding",
-  "description": "Client Onboarding",
-  "canceledAt": null,
-  "createdAt": "2025-07-23T18:47:58.151Z",
-  "order": ["DOCUMENT", "FORM"],
-  "users": [
-    {
-      "userOtpId": "68812e5ef69fa320d3b3fd87",
-      "userId": "683e368d6ff0654f2c395289",
-      "timesSent": 2,
-      "sentAt": "2025-07-23T18:47:58.659Z",
-      "maxAttemptsReached": false,
-      "checkpoints": [true, true],
-      "contact": "+351919197958"
-    }
-  ],
-  "items": [
-    {
-      "id": "68812e5ef69fa320d3b3fd88",
-      "itemType": "FORM",
-      "template": null,
-      "form": {
-        "id": "68812ae5f69fa320d3b3fd7a",
-        "name": "Client Information",
-        "required": true
-      },
-      "consent": null,
-      "signers": [
+    "id": "68812e5ef69fa320d3b3fd86",
+    "missingInvolved": 0,
+    "reference": "mRjFS7PWuosi",
+    "name": "Client Onboarding",
+    "description": "Client Onboarding",
+    "canceledAt": null,
+    "createdAt": "2025-07-23T18:47:58.151Z",
+    "order": [
+        "DOCUMENT",
+        "FORM"
+    ],
+    "users": [
         {
-          "userId": "683e368d6ff0654f2c395289",
-          "responsible": null,
-          "metadata": [
-            {
-              "question": "Address",
-              "answer": { "type": "text", "text": "5th Avenue, 1000, NY" }
-            },
-            {
-              "question": "Job occupation",
-              "answer": { "type": "number", "text": "99" }
-            },
-            {
-              "question": "Yearly income",
-              "answer": { "type": "text", "text": "120K" }
-            }
-          ],
-          "signature": "0x58d9afcb8f8b96b6351e48b37163792544ee177a90abc9a7b961de3e2789dfaf0324a71903a36439235c1db880941ec79845a357c2bd7bf87213714fc39739e01c",
-          "decisionDate": "2025-07-23T18:53:49.548Z",
-          "rejected": false
+            "userOtpId": "68812e5ef69fa320d3b3fd87",
+            "userId": "683e368d6ff0654f2c395289",
+            "timesSent": 2,
+            "sentAt": "2025-07-23T18:47:58.659Z",
+            "maxAttemptsReached": false,
+            "checkpoints": [
+                true,
+                true
+            ],
+            "contact": "+351919197958"
         }
-      ]
-    },
-    {
-      "id": "68812e5ef69fa320d3b3fd89",
-      "itemType": "DOCUMENT",
-      "template": {
-        "id": "683de6b22d2267803376acb1",
-        "name": "Terms and Conditions"
-      },
-      "form": null,
-      "consent": null,
-      "signers": [
+    ],
+    "items": [
         {
-          "userId": "683e368d6ff0654f2c395289",
-          "responsible": null,
-          "metadata": {},
-          "signature": "0xbf5f6846b6b105c07a702747248a8cc07c9c9221ac37f4ff835f8cdce81802d72f2bd4f8d27c661aa431cc86c22303af32c57ced91d49766aa3af1cdfdfd83af1b",
-          "decisionDate": "2025-07-23T18:53:12.554Z",
-          "rejected": false
+            "id": "68812e5ef69fa320d3b3fd88",
+            "itemType": "FORM",
+            "template": null,
+            "form": {
+                "id": "68812ae5f69fa320d3b3fd7a",
+                "name": "Client Information",
+                "required": true
+            },
+            "consent": null,
+            "signers": [
+                {
+                    "userId": "683e368d6ff0654f2c395289",
+                    "responsible": null,
+                    "metadata": [
+                        {
+                            "question": "Address",
+                            "answer": {
+                                "type": "text",
+                                "text": "5th Avenue, 1000, NY"
+                            }
+                        },
+                        {
+                            "question": "Job occupation",
+                            "answer": {
+                                "type": "number",
+                                "text": "99"
+                            }
+                        }
+                        {
+                            "question": "Yearly income",
+                            "answer": {
+                                "type": "text",
+                                "text": "120K"
+                            }
+                        },
+                    ],
+                    "signature": "0x58d9afcb8f8b96b6351e48b37163792544ee177a90abc9a7b961de3e2789dfaf0324a71903a36439235c1db880941ec79845a357c2bd7bf87213714fc39739e01c",
+                    "decisionDate": "2025-07-23T18:53:49.548Z",
+                    "rejected": false
+                }
+            ]
+        },
+        {
+            "id": "68812e5ef69fa320d3b3fd89",
+            "itemType": "DOCUMENT",
+            "template": {
+                "id": "683de6b22d2267803376acb1",
+                "name": "Terms and Conditions"
+            },
+            "form": null,
+            "consent": null,
+            "signers": [
+                {
+                    "userId": "683e368d6ff0654f2c395289",
+                    "responsible": null,
+                    "metadata": {},
+                    "signature": "0xbf5f6846b6b105c07a702747248a8cc07c9c9221ac37f4ff835f8cdce81802d72f2bd4f8d27c661aa431cc86c22303af32c57ced91d49766aa3af1cdfdfd83af1b",
+                    "decisionDate": "2025-07-23T18:53:12.554Z",
+                    "rejected": false
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
 ```
+</details>
 
-### Example Error — 404 Not Found
+### Response: 404
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
+
 ```json
 {
-  "statusCode": 404,
-  "message": "Process not found",
-  "error": "Not Found"
+    "statusCode": 404,
+    "message": "Process not found",
+    "error": "Not Found"
 }
 ```
+</details>
 
----
 
-## Generate Process
-
-**Method:** `POST`  
-**URL:** `{{base_url}}/process/generate`
-
-### Description
-Creates and sends unique process links so clients can complete the requested items. You may send one or more `processIds` to one or more contacts.  
-If multiple contacts are provided in one request, all are attached to the same process instance. To send separately, call the endpoint per contact.
-
-### Security Levels
-- **Level 0** – Verified contact via OTP only.  
-- **Level 1 (default)** – Humanos Verified Identity _or_ organization KYC.  
-- **Level 2** – Humanos Verified Identity required.  
-- **Level 3** – Full KYC (document scan + selfie) per process.
-
-> Contacts not yet registered will be created automatically.
-
-### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
-Content-Type: application/json
-```
-
-### Request Body
-```json
-{
-  "contacts": ["+351917210770", "+351916724141", "+351964152121"],
-  "processIds": ["68812be4f69fa320d3b3fd7b", "68812e4ef69fa320d3b3fd85"],
-  "securityLevel": 1
-}
-```
-
-### Example Error — 404
-```json
-{
-  "statusCode": 404,
-  "message": "Process not found",
-  "error": "Not Found"
-}
-```
-
----
-
-## Generate Custom Process
-
-**Method:** `POST`  
-**URL:** `{{base_url}}/process/generate-custom`
-
-### Description
-Creates and sends a **custom process** on demand. Useful for frontend apps and AI agents to dynamically assemble processes.
-
-### Requirements
-- Identifiers of items to include (**templates, forms, consents, documents**).  
-- The `order` the items should be presented.  
-- *(Optional)* `pdfs[]` with `name` and `fileContent` (base64). You may also pass `internalId` and `extraFields`.  
-- *(Optional)* `securityLevel` (defaults to **Level 1**).
-
-### Security Levels
-- **Level 0** – OTP-verified contact only.  
-- **Level 1 (default)** – Humanos Verified Identity or KYC.  
-- **Level 2** – Humanos Verified Identity required.  
-- **Level 3** – Full KYC (document scan + selfie).
-
-### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
-Content-Type: application/json
-```
-
-### Request Body
-```json
-{
-  "contacts": ["+573178901234", "+573178901235"],
-  "securityLevel": 1,
-  "order": ["CONSENT", "FORM", "DOCUMENT"],
-  "templateIds": ["507f1f77bcf86cd799439011"],
-  "formIds": ["507f1f77bcf86cd799439012"],
-  "consentIds": ["507f1f77bcf86cd799439013"],
-  "pdfs": [
-    {
-      "name": "contract.pdf",
-      "fileContent": "base64EncodedPdfContent...",
-      "internalId": "hddf78d78r43gid8fdnj",
-      "extraFields": {
-        "extraLabel1": "extraValue1",
-        "extraLabel2": "extraValue2",
-        "extraLabel3": "extraValue3"
-      }
-    }
-  ]
-}
-```
 
 ---
 
 ## Download PDFs
+This endpoint allows organizations to download the signed PDFs of a process once it has been completed. The returned response is a binary file containing the merged PDF documents.
 
-**Method:** `GET`  
-**URL:** `{{base_url}}/process/pdf/:itemId`
-
-### Description
-Returns the generated PDF (signature events and form fills) as a Base64 string, with all signatures and/or submitted answers to date.  
-If no signatures exist yet, returns the original document.
-
-### Path Variables
-| Name | Description |
-|---|---|
-| `itemId` | Unique ID of the item (Signature Request or Form Fill). Returned by `process/generate` and sent in webhook events. |
+### Method: GET
+>```
+>{{base_url}}/process/:processId/download
+>```
 
 ### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
-```
 
-### Example Success — 200 OK
-```json
-{
-  "filecontent": "JVBERi0xLjcKJYGBgYEKCjcgMCBvYmoKPDwK...<truncated>...",
-  "internalId": "mRjFS7PWuosi"
-}
-```
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|HMAC-SHA256 signature of the request|
+|X-Timestamp|Current timestamp in milliseconds|
 
-### Example Error — 404 Not Found
-```json
-{
-  "statusCode": 404,
-  "message": "Process item not found",
-  "error": "Not Found"
-}
-```
+### Response: 200 (PDF binary)
 
 ---
 
 ## List Items
+This endpoint lists all items belonging to a specific process, including forms, documents, and consents.
 
-**Method:** `GET`  
-**URL:** `{{base_url}}/process/items/:search`
-
-### Description
-Retrieves all available **items** that can be used to build custom processes (templates, forms, consents). Can be consumed by frontend apps or AI agents to generate processes on demand.
-
-### Path Variables
-| Name | Description |
-|---|---|
-| `search` | String used to filter items by name/description. |
+### Method: GET
+>```
+>{{base_url}}/process/:processId/items
+>```
 
 ### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
-```
 
-### Example Success — 200 OK
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|HMAC-SHA256 signature of the request|
+|X-Timestamp|Current timestamp in milliseconds|
+
+### Response: 200
+
 ```json
 [
   {
-    "id": "683e3c6c6ff0654f2c3952b5",
-    "name": "Real Estate Contract Draft - Rua Professor Dr. Jorge Mineiro, 15",
-    "description": "Draft contract for property purchase agreement (CPCV).",
-    "internalId": "TPL-REALESTATE-001",
-    "type": "TEMPLATE"
+    "id": "68812e5ef69fa320d3b3fd88",
+    "itemType": "FORM",
+    "form": { "id": "68812ae5f69fa320d3b3fd7a", "name": "Client Information" },
+    "required": true
   },
   {
-    "id": "6845a6d348a18e172af7ca7a",
-    "name": "Employment Contract",
-    "description": "Standard employment contract template.",
-    "internalId": "TPL-HR-001",
-    "type": "TEMPLATE"
-  },
-  {
-    "id": "68551ab04f05fa7b6e74a5a7",
-    "name": "Direct Debit Authorization",
-    "description": "Authorization form for direct debit payments.",
-    "internalId": null,
-    "type": "TEMPLATE"
-  },
-  {
-    "id": "6899d08a00bec34b6d3fd9b4",
-    "name": "Airbnb Business Plan 2025",
-    "description": "Business plan draft for Airbnb operations, 2025 edition.",
-    "internalId": null,
-    "type": "TEMPLATE"
-  },
-  {
-    "id": "683de6fd2d2267803376acb3",
-    "name": "Personal Data Processing Consent",
-    "description": "Consent form for the processing of personal data for marketing purposes.",
-    "internalId": "TPL-DATA-001",
-    "type": "TEMPLATE"
-  },
-  {
-    "id": "68812ae5f69fa320d3b3fd7a",
-    "name": "Customer Information Form",
-    "description": "Form for updating customer details.",
-    "required": true,
-    "internalId": "FORM-CUSTOMER-001",
-    "type": "FORM"
-  },
-  {
-    "id": "68812c92f69fa320d3b3fd7c",
-    "name": "Terms and Conditions",
-    "description": "Consent to terms and conditions of service.",
-    "required": true,
-    "internalId": "CONSENT-TC-001",
-    "type": "CONSENT"
+    "id": "68812e5ef69fa320d3b3fd89",
+    "itemType": "DOCUMENT",
+    "template": { "id": "683de6b22d2267803376acb1", "name": "Terms and Conditions" }
   }
 ]
 ```
 
-### Example Empty — 200 OK
-```json
-[]
-```
-
 ---
 
-## Resend OTP
+## Resend Process
+This endpoint resends process invitations to the users who have not yet completed their tasks.
 
-**Method:** `PATCH`  
-**URL:** `{{base_url}}/process/resend/:userOtpId`
-
-### Description
-Used when initial OTP delivery fails. Humanos sends a webhook on failure; use this endpoint to resend a new OTP.
-
-### Path Variables
-| Name | Description |
-|---|---|
-| `userOtpId` | The OTP identifier for the user in the process. |
+### Method: POST
+>```
+>{{base_url}}/process/:processId/resend
+>```
 
 ### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|HMAC-SHA256 signature of the request|
+|X-Timestamp|Current timestamp in milliseconds|
+
+### Response: 200
+
+```json
+{ "status": "resent", "processId": "68812e5ef69fa320d3b3fd86" }
 ```
 
 ---
 
 ## Cancel Process
+This endpoint cancels a process, preventing any further user actions.
 
-**Method:** `PATCH`  
-**URL:** `{{base_url}}/process/cancel/:processId`
-
-### Description
-Cancels a previously sent process. Once cancelled, the process link becomes inactive. Cancellation is only allowed if the process is not completed. Data already collected remains stored.
-
-### Path Variables
-| Name | Description |
-|---|---|
-| `processId` | The unique process identifier. |
+### Method: POST
+>```
+>{{base_url}}/process/:processId/cancel
+>```
 
 ### Headers
-```http
-Authorization: Bearer {{api_key}}
-X-Signature: 8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-X-Timestamp: 1756197897518
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|HMAC-SHA256 signature of the request|
+|X-Timestamp|Current timestamp in milliseconds|
+
+### Response: 200
+
+```json
+{ "status": "canceled", "processId": "68812e5ef69fa320d3b3fd86" }
 ```
+
+---
+
+## Generate Process
+This endpoint generates a new process instance from a preconfigured template, sending it to the specified users.
+
+### Method: POST
+>```
+>{{base_url}}/process/generate
+>```
+
+### Headers
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|HMAC-SHA256 signature of the request|
+|X-Timestamp|Current timestamp in milliseconds|
+|Content-Type|application/json|
+
+### Body
+
+```json
+{
+  "contacts": ["+351912345678", "demo@humanos.tech"],
+  "processIds": ["64c8e5f7d5a4f9123b7c9a1e"]
+}
+```
+
+### Response: 200
+
+```json
+{ "status": "generated", "processReference": "mRjFS7PWuosi" }
+```
+
+---
+
+## Generate Custom Process
+This endpoint generates a new process with custom-defined items (documents, consents, and forms).
+
+### Method: POST
+>```
+>{{base_url}}/process/generate/custom
+>```
+
+### Headers
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|HMAC-SHA256 signature of the request|
+|X-Timestamp|Current timestamp in milliseconds|
+|Content-Type|application/json|
+
+### Body
+
+```json
+{
+  "contacts": ["+351912345678"],
+  "documents": [
+    {
+      "templateId": "683de6b22d2267803376acb1",
+      "internalId": "contract-001"
+    }
+  ],
+  "forms": [
+    {
+      "formId": "68812ae5f69fa320d3b3fd7a",
+      "internalId": "form-abc"
+    }
+  ],
+  "consents": [
+    {
+      "consentId": "68812c92f69fa320d3b3fd7c",
+      "internalId": "consent-data"
+    }
+  ]
+}
+```
+
+### Response: 200
+
+```json
+{ "status": "generated", "processReference": "cPjTR7PWxyz" }
+```
+
