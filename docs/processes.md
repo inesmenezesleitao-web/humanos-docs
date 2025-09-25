@@ -300,128 +300,136 @@ This endpoint provides a real-time view of a process by passing its unique ID. *
 
 ---
 
+
+
+---
+
 ## Download PDFs
-This endpoint allows organizations to download the signed PDFs of a process once it has been completed. The returned response is a binary file containing the merged PDF documents.
 
-### Method: GET
->```
->{{base_url}}/process/:processId/download
->```
+`http://localhost:9000/v0/process/pdf/:itemId`
 
-### Headers
+Both Signature Events and Form Fills generate PDFs containing information about the document and the signatures of all participants. This endpoint returns a PDF encoded as a Base64 string, including all signatures collected up to the current moment.
 
-|Header|Value|
-|---|---|
-|Authorization|Bearer {{api_key}}|
-|X-Signature|HMAC-SHA256 signature of the request|
-|X-Timestamp|Current timestamp in milliseconds|
+If no signatures have been collected, the API returns the original document without any signatures.
 
-### Response: 200 (PDF binary)
+If some users have already signed, their signatures will appear on the PDF.
+
+For forms, the PDF also includes the date of submission and the answers provided by each user.
+
+Each PDF or form is assigned a unique itemId. This item ID is communicated to the organization via webhook whenever a relevant event occurs. Organizations can use the item ID to retrieve the corresponding PDFs and store them in their systems.
+
+### HEADERS
+
+Authorization  
+Bearer org1-key-1-12345678901234567890123456789012
+
+X-Signature  
+8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
+
+X-timestamp  
+1756197897518
+
+### PATH VARIABLES
+
+itemId  
+An item can be of type Signature Request or Form Fill. Each item is identified by a unique itemId. These IDs are generated and returned by the v0/process/generate endpoint whenever a new process is created. The webhook notification system also includes the corresponding itemId in every event, allowing organizations to track and retrieve the related documents.
 
 ---
 
 ## List Items
-This endpoint lists all items belonging to a specific process, including forms, documents, and consents.
 
-### Method: GET
->```
->{{base_url}}/process/:processId/items
->```
+`http://localhost:9000/v0/process/items`
 
-### Headers
+Retrieve all available items that can be used to build custom processes. These items include templates, forms, and consents, which can be dynamically combined to define workflows.
 
-|Header|Value|
-|---|---|
-|Authorization|Bearer {{api_key}}|
-|X-Signature|HMAC-SHA256 signature of the request|
-|X-Timestamp|Current timestamp in milliseconds|
+This endpoint can be consumed not only by frontend applications but also by AI agents to generate and deliver custom processes on demand to end-users. For example, an AI system could automatically select the appropriate templates, forms, and consents for a given context and trigger a process in real time.
 
-### Response: 200
+### HEADERS
 
-```json
-[
-  {
-    "id": "68812e5ef69fa320d3b3fd88",
-    "itemType": "FORM",
-    "form": { "id": "68812ae5f69fa320d3b3fd7a", "name": "Client Information" },
-    "required": true
-  },
-  {
-    "id": "68812e5ef69fa320d3b3fd89",
-    "itemType": "DOCUMENT",
-    "template": { "id": "683de6b22d2267803376acb1", "name": "Terms and Conditions" }
-  }
-]
-```
+Authorization  
+Bearer org1-key-1-12345678901234567890123456789012
+
+X-Signature  
+7a298fca1e2bcb15e807fa01af43d62cb7f9a56f9cb9f4377e5114c9a0f6e123
+
+X-timestamp  
+1756198000000
 
 ---
 
 ## Resend Process
-This endpoint resends process invitations to the users who have not yet completed their tasks.
 
-### Method: POST
->```
->{{base_url}}/process/:processId/resend
->```
+`http://localhost:9000/v0/process/:processId/resend`
 
-### Headers
+Resend invitations for users to complete pending items within a process. This is particularly useful in scenarios where users did not receive the initial notification, ignored it, or lost access to the original link.
 
-|Header|Value|
-|---|---|
-|Authorization|Bearer {{api_key}}|
-|X-Signature|HMAC-SHA256 signature of the request|
-|X-Timestamp|Current timestamp in milliseconds|
+Organizations can call this endpoint to ensure users are reminded to complete their tasks.
 
-### Response: 200
+### HEADERS
 
-```json
-{ "status": "resent", "processId": "68812e5ef69fa320d3b3fd86" }
-```
+Authorization  
+Bearer org1-key-1-12345678901234567890123456789012
+
+X-Signature  
+c93f1d1ac72e3097fa38de38f0324b7432292e0fd26f07f3bc492e22a7b75e81
+
+X-timestamp  
+1756198999000
+
+### PATH VARIABLES
+
+processId  
+Unique identifier of the process to resend.
 
 ---
 
 ## Cancel Process
-This endpoint cancels a process, preventing any further user actions.
 
-### Method: POST
->```
->{{base_url}}/process/:processId/cancel
->```
+`http://localhost:9000/v0/process/:processId/cancel`
 
-### Headers
+Cancel a process, permanently stopping its execution. Once canceled, users will no longer be able to interact with the process. This operation cannot be reversed.
 
-|Header|Value|
-|---|---|
-|Authorization|Bearer {{api_key}}|
-|X-Signature|HMAC-SHA256 signature of the request|
-|X-Timestamp|Current timestamp in milliseconds|
+Use this endpoint if a process was started by mistake or is no longer required.
 
-### Response: 200
+### HEADERS
 
-```json
-{ "status": "canceled", "processId": "68812e5ef69fa320d3b3fd86" }
-```
+Authorization  
+Bearer org1-key-1-12345678901234567890123456789012
+
+X-Signature  
+d5c2b4c7e23d9e9b08e3f90e7c42a1a73b5a18f25dc39c0abdf5c2d7f6b3910f
+
+X-timestamp  
+1756199001000
+
+### PATH VARIABLES
+
+processId  
+Unique identifier of the process to cancel.
 
 ---
 
 ## Generate Process
-This endpoint generates a new process instance from a preconfigured template, sending it to the specified users.
 
-### Method: POST
->```
->{{base_url}}/process/generate
->```
+`http://localhost:9000/v0/process/generate`
 
-### Headers
+Generate a new process instance from one or more preconfigured process templates. This endpoint allows organizations to quickly launch processes without manually assembling items.
 
-|Header|Value|
-|---|---|
-|Authorization|Bearer {{api_key}}|
-|X-Signature|HMAC-SHA256 signature of the request|
-|X-Timestamp|Current timestamp in milliseconds|
-|Content-Type|application/json|
+### HEADERS
 
-### Body
+Authorization  
+Bearer org1-key-1-12345678901234567890123456789012
+
+X-Signature  
+0fa27b2e8e61d6f437ec932947b1cfe01eeb2e7e60a904fa7f54e6c9e310d2d8
+
+X-timestamp  
+1756199123456
+
+Content-Type  
+application/json
+
+### BODY
 
 ```json
 {
@@ -430,32 +438,31 @@ This endpoint generates a new process instance from a preconfigured template, se
 }
 ```
 
-### Response: 200
-
-```json
-{ "status": "generated", "processReference": "mRjFS7PWuosi" }
-```
-
 ---
 
 ## Generate Custom Process
-This endpoint generates a new process with custom-defined items (documents, consents, and forms).
 
-### Method: POST
->```
->{{base_url}}/process/generate/custom
->```
+`http://localhost:9000/v0/process/generate/custom`
 
-### Headers
+Generate a new process dynamically by specifying custom sets of documents, consents, and forms. This endpoint gives organizations maximum flexibility to assemble workflows at runtime instead of relying solely on preconfigured templates.
 
-|Header|Value|
-|---|---|
-|Authorization|Bearer {{api_key}}|
-|X-Signature|HMAC-SHA256 signature of the request|
-|X-Timestamp|Current timestamp in milliseconds|
-|Content-Type|application/json|
+For example, an AI agent could automatically choose which consents and forms to include in a process based on the user’s profile, and then generate and send that process in real-time.
 
-### Body
+### HEADERS
+
+Authorization  
+Bearer org1-key-1-12345678901234567890123456789012
+
+X-Signature  
+3c8f7393f8c1b2d1a9d0f6b9e5a123f9d0c1b2a3f8c7d6e5a4b3c2d1e0f9a8b7
+
+X-timestamp  
+1756199234567
+
+Content-Type  
+application/json
+
+### BODY
 
 ```json
 {
@@ -480,10 +487,3 @@ This endpoint generates a new process with custom-defined items (documents, cons
   ]
 }
 ```
-
-### Response: 200
-
-```json
-{ "status": "generated", "processReference": "cPjTR7PWxyz" }
-```
-
