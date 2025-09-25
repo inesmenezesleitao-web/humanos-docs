@@ -328,8 +328,9 @@ Each PDF or form is assigned a unique **itemId**. This item ID is communicated t
 
 ### PATH VARIABLES
 
+|   |   |
+|---|---|
 | itemId | An item can be of type Signature Request or Form Fill. Each item is identified by a unique itemId. These IDs are generated and returned by the v0/process/generate endpoint whenever a new process is created. The webhook notification system also includes the corresponding itemId in every event, allowing organizations to track and retrieve the related documents. |
-|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 
 ---
