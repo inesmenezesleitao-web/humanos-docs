@@ -308,15 +308,15 @@ This endpoint provides a real-time view of a process by passing its unique ID. *
 
 `http://localhost:9000/v0/process/pdf/:itemId`
 
-Both Signature Events and Form Fills generate PDFs containing information about the document and the signatures of all participants. This endpoint returns a PDF encoded as a Base64 string, including all signatures collected up to the current moment.
+Both **Signature Events** and **Form Fills** generate PDFs containing information about the document and the signatures of all participants. This endpoint returns a PDF encoded as a Base64 string, including all signatures collected up to the current moment.
 
-* If no signatures have been collected, the API returns the original document without any signatures.
+* If **no signatures** have been collected, the API returns the original document without any signatures.
 
-* If some users have already signed, their signatures will appear on the PDF.
+* If **some users have already signed**, their signatures will appear on the PDF.
 
-* For forms, the PDF also includes the date of submission and the answers provided by each user.
+* For **forms**, the PDF also includes the date of submission and the answers provided by each user.
 
-Each PDF or form is assigned a unique itemId. This item ID is communicated to the organization via webhook whenever a relevant event occurs. Organizations can use the item ID to retrieve the corresponding PDFs and store them in their systems.
+Each PDF or form is assigned a unique **itemId**. This item ID is communicated to the organization via webhook whenever a relevant event occurs. Organizations can use the item ID to retrieve the corresponding PDFs and store them in their systems.
 
 ### HEADERS
 
@@ -340,9 +340,9 @@ An item can be of type Signature Request or Form Fill. Each item is identified b
 
 `http://localhost:9000/v0/process/items`
 
-Retrieve all available items that can be used to build custom processes. These items include templates, forms, and consents, which can be dynamically combined to define workflows.
+Retrieve all available items that can be used to build **custom processes**. These items include **templates, forms, and consents**, which can be dynamically combined to define workflows.
 
-This endpoint can be consumed not only by frontend applications but also by AI agents to generate and deliver custom processes on demand to end-users. For example, an AI system could automatically select the appropriate templates, forms, and consents for a given context and trigger a process in real time.
+This endpoint can be consumed not only by frontend applications but also by **AI agents** to **generate and deliver custom processes on demand** to end-users. For example, an AI system could automatically select the appropriate templates, forms, and consents for a given context and trigger a process in real time.
 
 ### HEADERS
 
@@ -387,9 +387,15 @@ Unique identifier of the process to resend.
 
 `http://localhost:9000/v0/process/:processId/cancel`
 
-Cancel a process, permanently stopping its execution. Once canceled, users will no longer be able to interact with the process. This operation cannot be reversed.
+This endpoint cancels a previously sent process.
 
-Use this endpoint if a process was started by mistake or is no longer required.
+* Once cancelled, the unique process link becomes inactive and no further user interactions are possible.
+
+* Cancellation is only permitted if the process has **not yet been completed by all participants**.
+
+* Any data already collected from users **remains stored** and is not deleted.
+
+
 
 ### HEADERS
 
@@ -413,7 +419,29 @@ Unique identifier of the process to cancel.
 
 `http://localhost:9000/v0/process/generate`
 
-Generate a new process instance from one or more preconfigured process templates. This endpoint allows organizations to quickly launch processes without manually assembling items.
+**Processes** can be created via the organization dashboard and may include **Identity Validations, Signature Requests, Consent Collection, and Form Filling**.
+
+This endpoint triggers the creation and delivery of unique process links, enabling clients to complete the tasks requested by the organization.
+
+* You can specify a list of processIds to be sent, along with a list of contacts.
+
+* When multiple contacts are provided, all users are attached to the same process instance.
+
+* To send processes to users separately, make multiple calls, each including only the intended contact.
+
+## Security Levels
+The securityLevel parameter defines the authentication required from the client:
+
+*** Level 0** – End-user only needs a verified contact via OTP (no identity required).
+
+* **Level 1 (default)** – End-user must have a Humanos Verified Identity or a KYC performed by the requesting organization.
+
+* **Level 2** – End-user must have a Humanos Verified Identity.
+
+* **Level 3** – End-user must perform a full KYC (document scan + selfie) for each process.
+
+Note: Contacts not yet registered in the Humanos API will be created automatically.
+
 
 ### HEADERS
 
@@ -444,9 +472,35 @@ application/json
 
 `http://localhost:9000/v0/process/generate/custom`
 
-Generate a new process dynamically by specifying custom sets of documents, consents, and forms. This endpoint gives organizations maximum flexibility to assemble workflows at runtime instead of relying solely on preconfigured templates.
+This endpoint **creates and sends a custom process on demand**.
 
-For example, an AI agent could automatically choose which consents and forms to include in a process based on the user’s profile, and then generate and send that process in real-time.
+It can be used by:
+
+* **Frontend applications** – allowing users to build processes dynamically.
+
+* **AI agents** – automatically generating and delivering processes to users in real time.
+
+To generate a process, the request body must include:
+
+* The identifiers of the items to be used (e.g., **templates, forms, consents, documents**).
+
+* The **order** in which these items should be presented to the user.
+
+* (Optional) An array of PDFs containing the name and fileContent as a base64 string. Optionally, an internalId and extraFields (Json) can be passed. The extra fields will be displayed in the signature page.
+
+* (Optional) The securityLevel parameter, which controls the authentication required from the client. If not provided, it defaults to **Level 1**.
+
+## Security Levels
+
+The securityLevel parameter accepts the following values:
+
+* **Level 0** – End-user only needs a verified contact via OTP (no identity required).
+
+* **Level 1 (default)** – End-user must have a Humanos Verified Identity or a KYC performed by the requesting organization.
+
+* **Level 2** – End-user must have a Humanos Verified Identity.
+
+* **Level 3** – End-user must perform a full KYC (document scan + selfie) for each process.
 
 ### HEADERS
 
