@@ -320,14 +320,11 @@ Each PDF or form is assigned a unique **itemId**. This item ID is communicated t
 
 ### HEADERS
 
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-
-X-timestamp  
-1756197897518
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
 
 ### PATH VARIABLES
 
@@ -346,14 +343,11 @@ This endpoint can be consumed not only by frontend applications but also by **AI
 
 ### HEADERS
 
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-7a298fca1e2bcb15e807fa01af43d62cb7f9a56f9cb9f4377e5114c9a0f6e123
-
-X-timestamp  
-1756198000000
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
 
 ---
 
@@ -367,14 +361,11 @@ Organizations can call this endpoint to ensure users are reminded to complete th
 
 ### HEADERS
 
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-c93f1d1ac72e3097fa38de38f0324b7432292e0fd26f07f3bc492e22a7b75e81
-
-X-timestamp  
-1756198999000
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
 
 ### PATH VARIABLES
 
@@ -399,14 +390,11 @@ This endpoint cancels a previously sent process.
 
 ### HEADERS
 
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-d5c2b4c7e23d9e9b08e3f90e7c42a1a73b5a18f25dc39c0abdf5c2d7f6b3910f
-
-X-timestamp  
-1756199001000
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
 
 ### PATH VARIABLES
 
@@ -445,17 +433,11 @@ Note: Contacts not yet registered in the Humanos API will be created automatical
 
 ### HEADERS
 
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-0fa27b2e8e61d6f437ec932947b1cfe01eeb2e7e60a904fa7f54e6c9e310d2d8
-
-X-timestamp  
-1756199123456
-
-Content-Type  
-application/json
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
 
 ### BODY
 
@@ -504,14 +486,11 @@ The securityLevel parameter accepts the following values:
 
 ### HEADERS
 
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-3c8f7393f8c1b2d1a9d0f6b9e5a123f9d0c1b2a3f8c7d6e5a4b3c2d1e0f9a8b7
-
-X-timestamp  
-1756199234567
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
 
 Content-Type  
 application/json
