@@ -16,7 +16,7 @@ To configure the webhook system, organization administrators can navigate to [Hu
 - **Encryption Salt** is used together with the Encryption Secret to derive the final encryption key. The salt adds uniqueness and protects against dictionary or pre-computed attacks, ensuring stronger security for each payload.
     
 
-<img src="https://content.pstmn.io/819d9046-b424-4c70-9fd8-7dd0286227ee/U2NyZWVuc2hvdCAyMDI1LTA5LTE0IGF0IDIwLjIyLjAwLnBuZw==">
+<img src="https://content.pstmn.io/819d9046-b424-4c70-9fd8-7dd0286227ee/U2NyZWVuc2hvdCAyMDI1LTA5LTE0IGF0IDIwLjIyLjAwLnBuZw=="/>
 
 ---
 
@@ -28,7 +28,7 @@ The following code snippet implements an express API containing an endpoint to d
 4. **Process the event** → Store it in your system, update statuses, or trigger business logic.
 5. **Respond quickly** → Always return **200 OK** after successful processing. Humanos retries failed deliveries automatically.
 
-``` javascript
+```javascript
 const express = require("express");
 const crypto = require("crypto");
 const app = express();
@@ -77,7 +77,7 @@ app.listen(3000, () => console.log("Listening on port 3000"));
 
 This webhook is triggered whenever a client successfully completes a **Know Your Customer (KYC)** verification process. Its purpose is to notify the organization and provide verified identity data for the user.
 
-``` json
+```json
 {
     "event": "process.kyc.completed",
     "organizationId": "680a65a4da4a16c0ea64face",
@@ -109,7 +109,7 @@ This webhook is triggered whenever a client successfully completes a **Know Your
             "height": "1,79",
             "documentDiscriminator": "6ZWS",
             "placeOfBirth": null,
-            "mrzText": null,
+            "mrzText": null
         }
     },
     "timestamp": 1754923963854
@@ -123,7 +123,7 @@ This webhook is triggered whenever a client successfully completes a **Know Your
 
 This webhook is triggered whenever a client completes the signing process for one or more documents. The payload contains information about the organization, the process, and the user who signed. Within metadata.items, it lists each document involved, including its identifiers, name, cryptographic hash, the client’s signature, decision date, and whether the signature was accepted or rejected.
 
-``` json
+```json
 {
   "eventType": "process.signature.completed",
   "organizationId": "680a65a4da4a16c0ea64face",
@@ -173,7 +173,7 @@ This webhook is triggered whenever a client completes the signing process for on
 
 This webhook is triggered whenever a professional completes the signing process for one or more documents. The payload contains information about the organization, the process, and the professional who signed. Within metadata.items, it lists each document involved, including its identifiers, name, cryptographic hash, the client’s signature, decision date, and whether the signature was accepted or rejected.
 
-``` json
+```json
 {
   "eventType": "process.signature.completed",
   "organizationId": "680a65a4da4a16c0ea64face",
@@ -213,7 +213,7 @@ This webhook is triggered whenever a professional completes the signing process 
 
 This webhook is triggered when a client completes the consent process for one or more consents. The payload includes details about the organization, process, and user. Inside metadata.items, each consent entry contains its identifiers, name, text, link, the client’s signature, decision date, and whether the consent was accepted or rejected.
 
-``` json
+```json
 {
   "eventType": "process.consent.completed",
   "organizationId": "680a65a4da4a16c0ea64face",
@@ -267,7 +267,7 @@ This webhook is triggered when a client completes the consent process for one or
 
 This webhook is triggered when a client completes and submits a form. The payload contains details about the organization, process, and user, along with the form information. Within the metadata, it includes the fields the user filled in, the form identifiers and metadata, and any associated signature data.
 
-``` json
+```json
 {
   "event": "process.form.filled",
   "processId": "68c88aaa6002536da855c049",
