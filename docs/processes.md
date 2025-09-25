@@ -310,11 +310,11 @@ This endpoint provides a real-time view of a process by passing its unique ID. *
 
 Both Signature Events and Form Fills generate PDFs containing information about the document and the signatures of all participants. This endpoint returns a PDF encoded as a Base64 string, including all signatures collected up to the current moment.
 
-If no signatures have been collected, the API returns the original document without any signatures.
+* If no signatures have been collected, the API returns the original document without any signatures.
 
-If some users have already signed, their signatures will appear on the PDF.
+* If some users have already signed, their signatures will appear on the PDF.
 
-For forms, the PDF also includes the date of submission and the answers provided by each user.
+* For forms, the PDF also includes the date of submission and the answers provided by each user.
 
 Each PDF or form is assigned a unique itemId. This item ID is communicated to the organization via webhook whenever a relevant event occurs. Organizations can use the item ID to retrieve the corresponding PDFs and store them in their systems.
 
