@@ -1,0 +1,7 @@
+{
+  "name": "Humanos API Docs",
+  "navigation": [
+    { "group": "Getting Started", "pages": ["introduction", "authentication"] },
+    { "group": "API Reference", "pages": ["users", "processes", "webhooks"] }
+  ]
+}
