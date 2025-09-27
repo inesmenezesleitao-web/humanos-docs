@@ -1,7 +1,19 @@
 {
   "name": "Humanos API Docs",
+  "favicon": "https://mintlify.s3-us-west-1.amazonaws.com/favicon.svg",
+  "colors": {
+    "primary": "#3B82F6",
+    "light": "#FFFFFF",
+    "dark": "#000000"
+  },
   "navigation": [
-    { "group": "Getting Started", "pages": ["introduction", "authentication"] },
-    { "group": "API Reference", "pages": ["users", "processes", "webhooks"] }
+    {
+      "group": "Getting Started",
+      "pages": ["introduction.md", "authentication.md"]
+    },
+    {
+      "group": "API Reference",
+      "pages": ["users.md", "processes.md", "webhooks.md"]
+    }
   ]
 }
