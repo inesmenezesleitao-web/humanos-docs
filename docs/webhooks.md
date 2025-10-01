@@ -1,3 +1,8 @@
+---
+title: Webhooks
+description: Receive real-time notifications about process events and user actions
+---
+
 # 📁 Webhooks 
 Humanos provides a comprehensive webhook system that allows organizations to receive real-time notifications when specific events occur in their processes. The webhook system supports two levels of granularity to provide maximum flexibility. Organizations have full flexibility to specify the exact URL paths where webhooks should be sent to.
 
@@ -16,7 +21,7 @@ To configure the webhook system, organization administrators can navigate to [Hu
 - **Encryption Salt** is used together with the Encryption Secret to derive the final encryption key. The salt adds uniqueness and protects against dictionary or pre-computed attacks, ensuring stronger security for each payload.
     
 
-<img src="https://content.pstmn.io/819d9046-b424-4c70-9fd8-7dd0286227ee/U2NyZWVuc2hvdCAyMDI1LTA5LTE0IGF0IDIwLjIyLjAwLnBuZw==">
+<img src="https://content.pstmn.io/819d9046-b424-4c70-9fd8-7dd0286227ee/U2NyZWVuc2hvdCAyMDI1LTA5LTE0IGF0IDIwLjIyLjAwLnBuZw==" alt="Webhook Configuration Example" />
 
 ---
 

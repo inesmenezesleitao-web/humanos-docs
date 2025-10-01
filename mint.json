@@ -1,7 +1,13 @@
 {
   "name": "Humanos API Docs",
+  "favicon": "/favicon.ico",
+  "colors": {
+    "primary": "#3b82f6",
+    "light": "#ffffff",
+    "dark": "#111827"
+  },
   "navigation": [
-    { "group": "Getting Started", "pages": ["introduction", "authentication"] },
-    { "group": "API Reference", "pages": ["users", "processes", "webhooks"] }
+    { "group": "Getting Started", "pages": ["introduction.md", "authentication.md"] },
+    { "group": "API Reference", "pages": ["users.md", "processes.md", "webhooks.md"] }
   ]
 }

@@ -1,3 +1,8 @@
+---
+title: Authentication
+description: Learn how to authenticate with the Humanos API using API keys and request signing
+---
+
 # Authentication
 
 ## 🔑 API Key

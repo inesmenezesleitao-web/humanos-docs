@@ -1,3 +1,8 @@
+---
+title: Users
+description: Manage users and import existing user data into Humanos
+---
+
 # 📁 Users
 
 This section covers all endpoints related to user management within Humanos.

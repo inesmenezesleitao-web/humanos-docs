@@ -1,3 +1,8 @@
+---
+title: Introduction
+description: Learn about the Humanos API and its capabilities
+---
+
 # Introduction
 
 The **Humanos API** provides a secure and reliable interface for managing users, identities, and business processes. It incorporates multiple layers of security, including: API key authentication, HMAC-SHA256 signature validation, AES-256-GCM encryption for sensitive data, IP and Domain validations. The API enables organizations to create and manage **users,** **identities and processes.** A **process** is delivered through a unique, secure link where the client can complete all requested interactions by the organization. The **Humanos API** provides real-time notifications, via secure webhooks, to the organization whenever a relevant event is completed.

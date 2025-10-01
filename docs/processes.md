@@ -1,3 +1,8 @@
+---
+title: Processes
+description: Create and manage processes, including document signing, forms, and consents
+---
+
 # 📁 Processes 
 This API section is fully dedicated to the creation and management of processes. 
 
@@ -21,8 +26,8 @@ This endpoint returns a list of processes saved by the organization, each includ
 
 |Param|value|
 |---|---|
-|search|<search_term>|
-|withDetails|<bool>|
+|search|`<search_term>`|
+|withDetails|`<bool>`|
 
 
 ### Response: 200
