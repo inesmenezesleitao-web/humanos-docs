@@ -11,7 +11,7 @@ This API section is fully dedicated to the creation and management of processes.
 This endpoint returns a list of processes saved by the organization, each including the process id, name and description. The id is required when calling the Generate Process endpoint. The response is limited to a maximum of 20 processes per request. Details regarding the items of the process can be included in the response by setting the withDetails param to true.
 ### Method: GET
 >```
->{{base_url}}/process?search=<search_term>&withDetails=<bool>
+>{{base_url}}/process?search=`<search_term>`&withDetails=`<bool>`
 >```
 ### Headers
 
@@ -26,8 +26,8 @@ This endpoint returns a list of processes saved by the organization, each includ
 
 |Param|value|
 |---|---|
-|search|<search_term>|
-|withDetails|<bool>|
+|search|`<search_term>`|
+|withDetails|`<bool>`|
 
 
 ### Response: 200
@@ -693,23 +693,11 @@ The securityLevel parameter accepts the following values:
 >```
 ### Headers
 
-|Content-Type|Value|
+|Header|Value|
 |---|---|
 |Authorization|Bearer {{api_key}}|
-
-
-### Headers
-
-|Content-Type|Value|
-|---|---|
 |X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
-
-
-### Headers
-
-|Content-Type|Value|
-|---|---|
-|X-Timestamp|1756197897518|
+|X-timestamp|1756197897518|
 
 
 ### Body (**raw**)
