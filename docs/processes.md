@@ -26,8 +26,8 @@ This endpoint returns a list of processes saved by the organization, each includ
 
 |Param|value|
 |---|---|
-|search|`<search_term>`|
-|withDetails|`<bool>`|
+|search|<search_term>|
+|withDetails|<bool>|
 
 
 ### Response: 200
@@ -169,17 +169,18 @@ This endpoint returns a list of processes saved by the organization, each includ
 </details>
 
 
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
 ## Process Status
 This endpoint provides a real-time view of a process by passing its unique ID. **Response body includes:**
 
 - **Basic process information:** name, reference, description, order, number of pending users, creation date, and cancellation date.
+    
 - **Item status:** for each item in the process (document, form, or consent), basic information is shown along with a list of signers and their actions (e.g., information provided, signature, rejection, etc.).
-
 ### Method: GET
 >```
 >{{base_url}}/process/status/:processId
 >```
-
 ### Headers
 
 |Header|Value|
@@ -187,6 +188,7 @@ This endpoint provides a real-time view of a process by passing its unique ID. *
 |Authorization|Bearer {{api_key}}|
 |X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
 |X-Timestamp|1756197897518|
+
 
 ### Response: 200
 <details open style="width: fit-content; max-height: 600px; overflow: auto">
@@ -302,192 +304,447 @@ This endpoint provides a real-time view of a process by passing its unique ID. *
 </details>
 
 
-
----
-
-
-
----
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
 ## Download PDFs
+Both **Signature Events** and **Form Fills** generate PDFs containing information about the document and the signatures of all participants. This endpoint returns a PDF encoded as a Base64 string, including all signatures collected up to the current moment.
 
-`http://localhost:9000/v0/process/pdf/:itemId`
+- If **no signatures** have been collected, the API returns the original document without any signatures.
+    
+- If **some users have already signed**, their signatures will appear on the PDF.
+    
+- For **forms**, the PDF also includes the date of submission and the answers provided by each user.
+    
 
-Both Signature Events and Form Fills generate PDFs containing information about the document and the signatures of all participants. This endpoint returns a PDF encoded as a Base64 string, including all signatures collected up to the current moment.
+Each PDF or form is assigned a unique **itemId**. This item ID is communicated to the organization via webhook whenever a relevant event occurs. Organizations can use the item ID to retrieve the corresponding PDFs and store them in their systems.
+### Method: GET
+>```
+>{{base_url}}/process/pdf/:itemId
+>```
+### Headers
 
-If no signatures have been collected, the API returns the original document without any signatures.
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-timestamp|1756197897518|
 
-If some users have already signed, their signatures will appear on the PDF.
 
-For forms, the PDF also includes the date of submission and the answers provided by each user.
-
-Each PDF or form is assigned a unique itemId. This item ID is communicated to the organization via webhook whenever a relevant event occurs. Organizations can use the item ID to retrieve the corresponding PDFs and store them in their systems.
-
-### HEADERS
-
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f
-
-X-timestamp  
-1756197897518
-
-### PATH VARIABLES
-
-itemId  
-An item can be of type Signature Request or Form Fill. Each item is identified by a unique itemId. These IDs are generated and returned by the v0/process/generate endpoint whenever a new process is created. The webhook notification system also includes the corresponding itemId in every event, allowing organizations to track and retrieve the related documents.
-
----
-
-## List Items
-
-`http://localhost:9000/v0/process/items`
-
-Retrieve all available items that can be used to build custom processes. These items include templates, forms, and consents, which can be dynamically combined to define workflows.
-
-This endpoint can be consumed not only by frontend applications but also by AI agents to generate and deliver custom processes on demand to end-users. For example, an AI system could automatically select the appropriate templates, forms, and consents for a given context and trigger a process in real time.
-
-### HEADERS
-
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-7a298fca1e2bcb15e807fa01af43d62cb7f9a56f9cb9f4377e5114c9a0f6e123
-
-X-timestamp  
-1756198000000
-
----
-
-## Resend Process
-
-`http://localhost:9000/v0/process/:processId/resend`
-
-Resend invitations for users to complete pending items within a process. This is particularly useful in scenarios where users did not receive the initial notification, ignored it, or lost access to the original link.
-
-Organizations can call this endpoint to ensure users are reminded to complete their tasks.
-
-### HEADERS
-
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-c93f1d1ac72e3097fa38de38f0324b7432292e0fd26f07f3bc492e22a7b75e81
-
-X-timestamp  
-1756198999000
-
-### PATH VARIABLES
-
-processId  
-Unique identifier of the process to resend.
-
----
-
-## Cancel Process
-
-`http://localhost:9000/v0/process/:processId/cancel`
-
-Cancel a process, permanently stopping its execution. Once canceled, users will no longer be able to interact with the process. This operation cannot be reversed.
-
-Use this endpoint if a process was started by mistake or is no longer required.
-
-### HEADERS
-
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-d5c2b4c7e23d9e9b08e3f90e7c42a1a73b5a18f25dc39c0abdf5c2d7f6b3910f
-
-X-timestamp  
-1756199001000
-
-### PATH VARIABLES
-
-processId  
-Unique identifier of the process to cancel.
-
----
-
-## Generate Process
-
-`http://localhost:9000/v0/process/generate`
-
-Generate a new process instance from one or more preconfigured process templates. This endpoint allows organizations to quickly launch processes without manually assembling items.
-
-### HEADERS
-
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
-
-X-Signature  
-0fa27b2e8e61d6f437ec932947b1cfe01eeb2e7e60a904fa7f54e6c9e310d2d8
-
-X-timestamp  
-1756199123456
-
-Content-Type  
-application/json
-
-### BODY
+### Response: 200
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
 
 ```json
 {
-  "contacts": ["+351912345678", "demo@humanos.tech"],
-  "processIds": ["64c8e5f7d5a4f9123b7c9a1e"]
+    "filecontent": "JVBERi0xLjcKJYGBgYEKCjcgMCBvYmoKPDwK...<truncated>...",
+    "internalId": "mRjFS7PWuosi"
+}
+```
+</details>
+
+### Response: 404
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
+
+```json
+{
+    "statusCode": 404,
+    "message": "Process item not found",
+    "error": "Not Found"
+}
+```
+</details>
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## List Items
+Retrieve all available items that can be used to build **custom processes**. These items include **templates, forms, and consents**, which can be dynamically combined to define workflows.
+
+This endpoint can be consumed not only by frontend applications but also by **AI agents** to **generate and deliver custom processes on demand** to end-users. For example, an AI system could automatically select the appropriate templates, forms, and consents for a given context and trigger a process in real time.
+### Method: GET
+>```
+>{{base_url}}/process/items/:search
+>```
+### Headers
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-timestamp|1756197897518|
+
+
+### Response: 200
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
+
+```json
+[
+  {
+    "id": "683e3c6c6ff0654f2c3952b5",
+    "name": "Real Estate Contract Draft - Rua Professor Dr. Jorge Mineiro, 15",
+    "description": "Draft contract for property purchase agreement (CPCV).",
+    "internalId": "TPL-REALESTATE-001",
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "6845a6d348a18e172af7ca7a",
+    "name": "Employment Contract",
+    "description": "Standard employment contract template.",
+    "internalId": "TPL-HR-001",
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "68551ab04f05fa7b6e74a5a7",
+    "name": "Direct Debit Authorization",
+    "description": "Authorization form for direct debit payments.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "6899d08a00bec34b6d3fd9b4",
+    "name": "Airbnb Business Plan 2025",
+    "description": "Business plan draft for Airbnb operations, 2025 edition.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "683de6fd2d2267803376acb3",
+    "name": "Personal Data Processing Consent",
+    "description": "Consent form for the processing of personal data for marketing purposes.",
+    "internalId": "TPL-DATA-001",
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "6842be61c51450fcf80877fd",
+    "name": "Life Insurance Policy",
+    "description": "Template for life insurance agreement.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "68824b3f655b773fda3d0ed9",
+    "name": "ISO/IEC 27001 Audit Checklist",
+    "description": "Audit checklist for ISO/IEC 27001 compliance.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "6883a92ca1e72aa9fd23c513",
+    "name": "Employment Contract - Rodrigo Sarroeira",
+    "description": "Personalized employment contract for Rodrigo Sarroeira.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "6899d06e00bec34b6d3fd9b3",
+    "name": "Service Agreement 2025",
+    "description": "Standard service agreement for 2025.",
+    "internalId": "TPL-SERVICE-2025",
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "6845a69f48a18e172af7ca74",
+    "name": "Marketing Consent - Single Document",
+    "description": "Unified consent document for marketing activities.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "683de70f2d2267803376acb4",
+    "name": "Medical Liability Agreement",
+    "description": "Agreement outlining clinical liability responsibilities.",
+    "internalId": "TPL-CLINICAL-001",
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "683de6b22d2267803376acb1",
+    "name": "Service Contract",
+    "description": "General service contract template.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "683de6cb2d2267803376acb2",
+    "name": "Employment Contract",
+    "description": "Standard employment contract template.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "683eb6254b4ddc288c3edd8a",
+    "name": "Medical Liability Agreement 2025",
+    "description": "Updated version of the clinical liability agreement for 2025.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "683ebdb54b4ddc288c3edd8f",
+    "name": "Pet Inn Liability Agreement 2025",
+    "description": "Liability agreement for Pet Inn services, 2025 edition.",
+    "internalId": null,
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "6883a855308d6b9931bdd444",
+    "name": "Contrast Administration Consent",
+    "description": "Consent form for medical contrast administration.",
+    "internalId": "TPL-MEDICAL-002",
+    "type": "TEMPLATE"
+  },
+  {
+    "id": "68812ae5f69fa320d3b3fd7a",
+    "name": "Customer Information Form",
+    "description": "Form for updating customer details.",
+    "required": true,
+    "internalId": "FORM-CUSTOMER-001",
+    "type": "FORM"
+  },
+  {
+    "id": "689620e18e06c3561fd49f0d",
+    "name": "Personal Information Form",
+    "description": "Form to collect or update personal information.",
+    "required": true,
+    "internalId": null,
+    "type": "FORM"
+  },
+  {
+    "id": "68812c92f69fa320d3b3fd7c",
+    "name": "Terms and Conditions",
+    "description": "Consent to terms and conditions of service.",
+    "required": true,
+    "internalId": "CONSENT-TC-001",
+    "type": "CONSENT"
+  },
+  {
+    "id": "6894b96e8aecc042e54184cc",
+    "name": "Webhook Test Consent",
+    "description": "Test consent item for webhook validation.",
+    "required": false,
+    "internalId": null,
+    "type": "CONSENT"
+  },
+  {
+    "id": "6894b97a8aecc042e54184cd",
+    "name": "New Consent Agreement",
+    "description": "Generic consent document for new use cases.",
+    "required": true,
+    "internalId": "CONSENT-NEW-001",
+    "type": "CONSENT"
+  }
+]
+```
+</details>
+
+### Response: 200
+<details open style="width: fit-content; max-height: 600px; overflow: auto">
+<summary>Response example:</summary>
+
+```json
+[]
+```
+</details>
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## Resend Process
+This endpoint is used when the initial OTP delivery fails. If the first attempt is unsuccessful, Humanos will send a failure notification through a webhook, and this endpoint can then be called to resend a new OTP.
+### Method: PATCH
+>```
+>{{base_url}}/process/resend/:userOtpId
+>```
+### Headers
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
+
+
+### Body (**raw**)
+
+```json
+
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## Cancel Process
+This endpoint cancels a previously sent process.
+
+- Once cancelled, the unique process link becomes inactive and no further user interactions are possible.
+    
+- Cancellation is only permitted if the process has **not yet been completed by all participants**.
+    
+- Any data already collected from users **remains stored** and is not deleted.
+### Method: PATCH
+>```
+>{{base_url}}/process/cancel/:processId
+>```
+### Headers
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
+
+
+### Body (**raw**)
+
+```json
+
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## Generate Process
+**Processes** can be created via the organization dashboard and may include **Identity Validations**, **Signature Requests**, **Consent Collection**, and **Form Filling**.
+
+This endpoint triggers the creation and delivery of unique process links, enabling clients to complete the tasks requested by the organization.
+
+- You can specify a list of processIds to be sent, along with a list of contacts.
+    
+- When multiple contacts are provided, all users are attached to the same process instance.
+    
+- To send processes to users separately, make multiple calls, each including only the intended contact.
+    
+
+### **Security Levels**
+
+The securityLevel parameter defines the authentication required from the client:
+
+- **Level 0** – End-user only needs a verified contact via OTP (no identity required).
+    
+- **Level 1 (default)** – End-user must have a Humanos Verified Identity **or** a KYC performed by the requesting organization.
+    
+- **Level 2** – End-user must have a Humanos Verified Identity.
+    
+- **Level 3** – End-user must perform a full KYC (document scan + selfie) for each process.
+    
+
+> **Note:** Contacts not yet registered in the Humanos API will be created automatically.
+### Method: POST
+>```
+>{{base_url}}/process/generate
+>```
+### Headers
+
+|Header|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+|X-Timestamp|1756197897518|
+
+
+### Body (**raw**)
+
+```json
+{
+    "contacts": ["+351917210770", "+351916724141", "+351964152121"],
+    "processIds": ["68812be4f69fa320d3b3fd7b", "68812e4ef69fa320d3b3fd85"],
+    "securityLevel": 1
 }
 ```
 
----
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
 ## Generate Custom Process
+This endpoint **creates and sends a custom process on demand**.
 
-`http://localhost:9000/v0/process/generate/custom`
+It can be used by:
 
-Generate a new process dynamically by specifying custom sets of documents, consents, and forms. This endpoint gives organizations maximum flexibility to assemble workflows at runtime instead of relying solely on preconfigured templates.
+- **Frontend applications** – allowing users to build processes dynamically.
+    
+- **AI agents** – automatically generating and delivering processes to users in real time.
+    
 
-For example, an AI agent could automatically choose which consents and forms to include in a process based on the user’s profile, and then generate and send that process in real-time.
+To generate a process, the request body must include:
 
-### HEADERS
+- The identifiers of the items to be used (e.g., **templates, forms, consents, documents**).
+    
+- The **order** in which these items should be presented to the user.
+    
+- (Optional) An array of PDFs containing the name and fileContent as a base64 string. Optionally, an internalId and extraFields (Json) can be passed. The extra fields will be displayed in the signature page.
+    
+- (Optional) The securityLevel parameter, which controls the authentication required from the client. If not provided, it defaults to **Level 1**.
+    
 
-Authorization  
-Bearer org1-key-1-12345678901234567890123456789012
+**Security Levels**
 
-X-Signature  
-3c8f7393f8c1b2d1a9d0f6b9e5a123f9d0c1b2a3f8c7d6e5a4b3c2d1e0f9a8b7
+The securityLevel parameter accepts the following values:
 
-X-timestamp  
-1756199234567
+- **Level 0** – End-user only needs a verified contact via OTP (no identity required).
+    
+- **Level 1 (default)** – End-user must have a Humanos Verified Identity **or** a KYC performed by the requesting organization.
+    
+- **Level 2** – End-user must have a Humanos Verified Identity.
+    
+- **Level 3** – End-user must perform a full KYC (document scan + selfie) for each process.
+### Method: POST
+>```
+>{{base_url}}/process/generate-custom
+>```
+### Headers
 
-Content-Type  
-application/json
+|Content-Type|Value|
+|---|---|
+|Authorization|Bearer {{api_key}}|
 
-### BODY
+
+### Headers
+
+|Content-Type|Value|
+|---|---|
+|X-Signature|8c7695c48907e84f5f6b1ec94362a2798ca640621ed051e95a152f6ab9d2ec4f|
+
+
+### Headers
+
+|Content-Type|Value|
+|---|---|
+|X-Timestamp|1756197897518|
+
+
+### Body (**raw**)
 
 ```json
 {
-  "contacts": ["+351912345678"],
-  "documents": [
-    {
-      "templateId": "683de6b22d2267803376acb1",
-      "internalId": "contract-001"
-    }
+  "contacts": [
+    "+573178901234",
+    "+573178901235"
   ],
-  "forms": [
-    {
-      "formId": "68812ae5f69fa320d3b3fd7a",
-      "internalId": "form-abc"
-    }
+  "securityLevel": 1,
+  "order": [
+    "CONSENT",
+    "FORM",
+    "DOCUMENT"
   ],
-  "consents": [
+  "templateIds": [
+    "507f1f77bcf86cd799439011"
+  ],
+  "formIds": [
+    "507f1f77bcf86cd799439012"
+  ],
+  "consentIds": [
+    "507f1f77bcf86cd799439013"
+  ],
+  "pdfs": [
     {
-      "consentId": "68812c92f69fa320d3b3fd7c",
-      "internalId": "consent-data"
+      "name": "contract.pdf",
+      "fileContent": "base64EncodedPdfContent...",
+      "internalId": "hddf78d78r43gid8fdnj",
+      "extraFields": {
+        "extraLabel1": "extraValue1",
+        "extraLabel2": "extraValue2",
+        "extraLabel3": "extraValue3"
+      }
     }
   ]
 }
